@@ -50,6 +50,7 @@ traverseInOrder Empty = []
 traverseInOrder (Node _ left val right) =
     traverseInOrder left ++ [val] ++ traverseInOrder right
 
+-- Tests for string cleaning
 testCleanString :: Test
 testCleanString = TestList
     [ "Remove special characters" ~: cleanString "Hello, World!" ~?= "hello world"
@@ -97,12 +98,9 @@ instance Eq a => Eq (RBTree a) where
 
 
 
--- Tests Tree
+-- Test for Red-Black Tree balancing
 testBalanceCase1 :: Test
 testBalanceCase1 = TestCase $ do
-    let unbalancedTree :: RBTree Int
-        unbalancedTree = Node Black (Node Red (Node Red Empty 1 Empty) 2 Empty) 3 Empty
-
     let expectedTree :: RBTree Int
         expectedTree = Node Red (Node Black Empty 1 Empty) 2 (Node Black Empty 3 Empty)
 
@@ -111,20 +109,82 @@ testBalanceCase1 = TestCase $ do
 
 testBalanceCase2 :: Test
 testBalanceCase2 = TestCase $ do
-    
-    let unbalancedTree :: RBTree Int
-        unbalancedTree = Node Black (Node Red Empty 1 (Node Red Empty 2 Empty)) 3 Empty
-
     let expectedTree :: RBTree Int
         expectedTree = Node Red (Node Black Empty 1 Empty) 2 (Node Black Empty 3 Empty)
 
-   
     let balancedTree = balance Black (Node Red Empty 1 (Node Red Empty 2 Empty)) 3 Empty
     assertEqual "Balance Case 2: Rightchild of Leftchild is red" expectedTree balancedTree
 
 
+-- Edge case: Empty input
+testEmptyInput :: Test
+testEmptyInput = TestCase $ do
+    let content = ""
+    let tokenized = tokenize content
+    let tree = foldr insert Empty tokenized
+    let sortedWords = traverseInOrder tree
+    assertEqual "Empty input should result in empty output" [] sortedWords
+
+-- Edge case: Punctuation-only input
+testPunctuationOnly :: Test
+testPunctuationOnly = TestCase $ do
+    let content = "!!! ??? ,,, ..."
+    let tokenized = tokenize content
+    let tree = foldr insert Empty tokenized
+    let sortedWords = traverseInOrder tree
+    assertEqual "Punctuation-only input should result in empty output" [] sortedWords
+
+-- Edge case: Large dataset
+testLargeDataset :: Test
+testLargeDataset = TestCase $ do
+    let content = unwords (replicate 100000 "test")
+    let tokenized = tokenize content
+    let tree = foldr insert Empty tokenized
+    let sortedWords = traverseInOrder tree
+    assertEqual "Large dataset should handle high volume of data" ["test"] sortedWords
 
 
+testDeepTree :: Test
+testDeepTree = TestCase $ do
+    let elements :: [Int]
+        elements = [1..100000] -- Explizite Typannotation auf Int
+    let tree = foldr insert Empty elements
+    let sorted = traverseInOrder tree
+    assertEqual "Deep tree with large unique input" elements sorted
+
+
+testCaseInsensitive :: Test
+testCaseInsensitive = TestCase $ do
+    let content = "Hello HELLO HeLLo"
+    let tokenized = tokenize content
+    let tree = foldr insert Empty tokenized
+    let sorted = traverseInOrder tree
+    assertEqual "Case insensitivity check" ["hello"] sorted
+
+
+testNumbersAndSpecialChars :: Test
+testNumbersAndSpecialChars = TestCase $ do
+    let content = "123 456 !@# hello"
+    let tokenized = tokenize content
+    let tree = foldr insert Empty tokenized
+    let sorted = traverseInOrder tree
+    assertEqual "Numbers and special characters ignored" ["hello"] sorted
+
+testDescendingOrder :: Test
+testDescendingOrder = TestCase $ do
+    let elements :: [Int]
+        elements = reverse [1..100] -- Explizite Typannotation auf Int
+    let tree = foldr insert Empty elements
+    let sorted = traverseInOrder tree
+    assertEqual "Descending order input" ([1..100] :: [Int]) sorted
+
+
+testManyDuplicates :: Test
+testManyDuplicates = TestCase $ do
+    let elements = replicate 10000 "hello"
+    let tree = foldr insert Empty elements
+    let sorted = traverseInOrder tree
+    assertEqual "Large number of duplicate entries" ["hello"] sorted
 
 
 -- Hauptfunktion für die Tests
@@ -137,20 +197,36 @@ main = do
         , testPipeline
         , testBalanceCase1
         , testBalanceCase2
-        
+        , testEmptyInput
+        , testPunctuationOnly
+        , testLargeDataset
+        , testDeepTree
+        , testCaseInsensitive
+        , testNumbersAndSpecialChars
+        , testDescendingOrder
+        , testManyDuplicates
         ]
 
 
--- 	testCleanString - 	Entfernt Sonderzeichen aus dem String.
---	testCleanString - 	Wandelt Großbuchstaben in Kleinbuchstaben um.
---	testCleanString - 	Behält Leerzeichen bei.
---	testTokenize - 	Zerlegt einen einfachen Satz in Wörter.
---	testTokenize - 	Entfernt Sonderzeichen und zerlegt den Text in Wörter.
---	testTokenize - 	Ignoriert mehrere aufeinanderfolgende Leerzeichen.
---	testTreeOperations - Fügt ein einzelnes Element in den Baum ein und traversiert ihn.
---	testTreeOperations - Fügt mehrere Elemente ein und überprüft die In-Order-Traversierung.
---	testTreeOperations - Ignoriert doppelte Elemente im Baum.
---	testPipeline	Überprüft die gesamte Datenverarbeitungspipeline.
--- testBalanceCase1 - LLinks von Links ist rot
---  testBalanceCase2 -  Rightchild des Leftchild ist rot
-        
+-- testCleanString - 	Entfernt Sonderzeichen aus dem String.
+-- testCleanString - 	Wandelt Großbuchstaben in Kleinbuchstaben um.
+-- testCleanString - 	Behält Leerzeichen bei.
+-- testTokenize - 	Zerlegt einen einfachen Satz in Wörter.
+-- testTokenize - 	Entfernt Sonderzeichen und zerlegt den Text in Wörter.
+-- testTokenize - 	Ignoriert mehrere aufeinanderfolgende Leerzeichen.
+-- testTreeOperations - Fügt ein einzelnes Element in den Baum ein und traversiert ihn.
+-- testTreeOperations - Fügt mehrere Elemente ein und überprüft die In-Order-Traversierung.
+-- testTreeOperations - Ignoriert doppelte Elemente im Baum.
+-- testPipeline	Überprüft die gesamte Datenverarbeitungspipeline.
+-- testBalanceCase1 - Links von Links ist rot
+-- testBalanceCase2 -  Rightchild des Leftchild ist rot
+-- testEmptyInput - Testet, ob der Algorithmus leere Eingaben korrekt verarbeitet und eine leere Ausgabe erzeugt.
+-- testPunctuationOnly - Verarbeitet Eingaben, die nur aus Satzzeichen bestehen, und prüft, ob keine Ausgabe generiert wird.
+-- testLargeDataset - Simuliert die Verarbeitung eines sehr großen Datensatzes (100.000 Wörter), um die Effizienz und Korrektheit zu gewährleisten.
+-- testBalanceCases - Testet verschiedene Balancierungsfälle, insbesondere wenn das linke oder rechte Kind eines roten Knotens selbst rot ist.
+-- testLargeDataset - Simuliert Verarbeitung eines großen Datensatzes (100.000 Wörter), um die Effizienz und Korrektheit zu gewährleisten.
+-- testDeepTree - Fügt viele eindeutige Zahlen (1 bis 100.000) ein und prüft, ob der Baum korrekt balanciert ist und die Zahlen aufsteigend zurückgibt.
+-- testCaseInsensitive - Fügt Wörter mit gemischter Groß-/Kleinschreibung ein und prüft, ob sie fallunempfindlich korrekt zusammengefasst werden.
+-- testNumbersAndSpecialChars - Verarbeitet Zahlen und Sonderzeichen im Eingabetext und stellt sicher, dass sie ignoriert werden.
+-- testDescendingOrder - Fügt Zahlen in absteigender Reihenfolge ein und prüft, ob die In-Order-Traversierung die Zahlen aufsteigend zurückgibt.
+-- testManyDuplicates - Fügt viele doppelte Wörter (10.000 Mal "hello") in den Baum ein und prüft, ob Duplikate korrekt ignoriert werden.        
