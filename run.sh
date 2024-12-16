@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Skript für stack build, stack test, Dateiüberprüfung und abschließendes Ausführen von stack exec
-
-# Mit set -e stoppen wir das Skript, falls ein Befehl fehlschlägt
 set -e
 
 # Name der Datei, die eingelesen werden soll
