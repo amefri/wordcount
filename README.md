@@ -33,7 +33,7 @@ Das Skript erledigt folgende Schritte automatisch:
 
 -------------------------
 
-#### Anleitung zum manuellen Ausführen:
+## Anleitung zum manuellen Ausführen:
 
 1. Projekt aufbauen:
    ```bash
