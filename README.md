@@ -1,105 +1,58 @@
-# Wordcount
+# Red-Black Tree
 
-**Ein Haskell-Programm, das eine Textdatei einliest, die Wörter alphabetisch sortiert und Duplikate entfernt.**
+Dieses Projekt implementiert eine vollständige Datenverarbeitungspipeline, die Textdateien liest, bereinigt, in Wörter zerlegt, in einen Red-Black-Baum einfügt, die Wörter sortiert und die sortierten Wörter in eine Ausgabedatei schreibt. Es enthält außerdem umfangreiche Tests, um die verschiedenen Komponenten und Randfälle zu überprüfen.
 
-## Voraussetzungen
+----------------
 
-Um dieses Projekt zu verwenden, benötigst du Folgendes:
+## Anleitung zum automatischen Ausführen
 
-- [Haskell Stack](https://docs.haskellstack.org/en/stable/README/) (zum Bauen und Ausführen von Haskell-Projekten)
-- Eine Unix-basierte Shell (z.B. Bash) zum Ausführen der `run.sh`-Datei
+### 1. Voraussetzungen
 
-## Installation
+- Installiertes [Haskell Stack](https://docs.haskellstack.org/en/stable/) oder passende Erweiterung in VSCode.
+- Eine Eingabedatei namens `warandpeace.txt` im aktuellen Verzeichnis (Testbeispiel).
 
-1. Klone das Repository:
+### 2. Kompilieren und automatisch Ausführen
 
-   ```bash
-   git clone https://github.com/amefri/wordcount/
-   cd wordcount
-   ```
-
-2. Stelle sicher, dass Stack installiert ist:
-
-   ```bash
-   stack --version
-   ```
-
-3. Kompiliere und führe das Projekt aus, indem du das Shell-Skript `run.sh` ausführst:
+Folgende Befehle in die Konsole eingeben:
 
 ```bash
-   chmod +x run.sh
-  ./run.sh
-  ```
-Gib danach den Pfad der Datei ein die du sortieren möchtest.
-  
-
-## Aufbau des Projekts
-
-Die wichtigsten Dateien und Verzeichnisse:
-
-```
-wordcount/
-├── app/                   # Hauptanwendungscode
-│   └── Main.hs            # Einstiegspunkt der Anwendung
-├── src/                   # Quellcode des Projekts
-│   └── Lib.hs             # Bibliotheksfunktionen
-├── test/                  # Tests für das Projekt
-│   └── Spec.hs            # Testfälle für die Anwendung
-├── run.sh                 # Skript zum Kompilieren und Ausführen
-├── package.yaml           # Projektkonfiguration für Stack
-├── stack.yaml             # Stack-spezifische Konfigurationsdatei
-├── stack.yaml.lock        # Stack-Lockdatei
-├── project.cabal          # Cabal-Konfigurationsdatei
-├── output.txt             # Beispielausgabedatei
-├── Setup.hs               # Setup-Skript für Cabal
-├── LICENSE                # Lizenzdatei
-├── CHANGES.md             # Änderungsprotokoll
-└── README.md              # Diese Datei
+chmod +x run.sh  # Skript ausführbar machen
+./run.sh        # Skript starten
 ```
 
-## Verwendung
+### 3. Eingabe- und Ausgabedateien
 
-1. Erstelle eine Eingabedatei (z.B. `input.txt`) mit einigen Wörtern, getrennt durch Leerzeichen oder Zeilenumbrüche:
+- **Eingabe**: `warandpeace.txt` (oder eine andere Datei mit Textinhalt).
+- **Ausgabe**: `output.txt` mit sortierten Wörtern.
 
-   ```
-   banana apple orange apple kiwi banana
-   ```
+Das Skript erledigt folgende Schritte automatisch:
+- Überprüft, ob die Eingabedatei existiert.
+- Führt `stack build` aus, um das Projekt zu kompilieren.
+- Führt `stack test` aus, um die Tests auszuführen.
+- Startet die Anwendung mit `stack exec project-exe`.
 
-2. Führe das Skript aus:
+-------------------------
 
+#### Anleitung zum manuellen Ausführen:
+
+1. Projekt aufbauen:
    ```bash
-   ./run.sh input.txt
+   stack build
    ```
-
-3. Die Ausgabe zeigt die Wörter alphabetisch sortiert und ohne Duplikate:
-
+2. Tests ausführen:
+   ```bash
+   stack test
    ```
-   apple banana kiwi orange
+3. Programm starten:
+   ```bash
+   stack exec project-exe
    ```
+4. Bei Programmstart:
+   - Pfad zur Eingangsdatei eingeben (z.B. `warandpeace.txt`).
 
-Falls du das Projekt manuell mit Stack ausführen möchtest, benutze folgende Befehle:
+5. Mit ````nano output.txt```` die Ausgabedatei ansehen
 
-```bash
-stack build        # Kompiliert das Projekt
-stack exec wordcount < input.txt   # Führt das Projekt aus
-```
-
-## Beispielausgabe
-
-Beispiel-Eingabedatei (`input.txt`):
-
-```
-apple banana kiwi apple banana orange
-```
-
-Ausgabe im Terminal:
-
-```
-apple banana kiwi orange
-```
+## Autorinnen
+Amelie Frimberger & Patricia Tetcu
 
 
-
-
-**Patricia Tetcu, Amelie Frimberger**  
-**[GitHub Repository](https://github.com/amefri/wordcount/)**
