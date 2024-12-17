@@ -4,14 +4,33 @@ Dieses Projekt implementiert eine vollständige Datenverarbeitungspipeline, die 
 
 ----------------
 
+
 ## Anleitung zum automatischen Ausführen
 
 ### 1. Voraussetzungen
 
 - Installiertes [Haskell Stack](https://docs.haskellstack.org/en/stable/) oder passende Erweiterung in VSCode.
-- Eine Eingabedatei namens `warandpeace.txt` im aktuellen Verzeichnis (Testbeispiel).
+- Eine Eingabedatei im .txt Format (hier: `warandpeace.txt` als Beispiel)
 
-### 2. Kompilieren und automatisch Ausführen
+
+
+### 2. Installieren, Kompilieren und automatisch Ausführen
+
+
+Klone das Repository:
+
+   ```bash
+   git clone https://github.com/amefri/wordcount/
+   cd wordcount
+   ```
+
+
+
+oder downloade und entpacke die ZIP-Datei:
+   ```bash
+   unzip wordcount.zip
+   cd wordcount
+   ```
 
 Folgende Befehle in die Konsole eingeben:
 
